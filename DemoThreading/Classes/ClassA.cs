@@ -14,7 +14,6 @@ namespace DemoThreading.Classes
             _random = new Random();
         }
 
-        // This method will be called by the BackgroundWorker
         public void GenerateNumbers(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;

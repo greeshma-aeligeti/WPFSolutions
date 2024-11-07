@@ -45,18 +45,20 @@ namespace DemoThreading
         private void BgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             int number = (int)e.UserState;
-
+            int inputNumber;
             if (e.ProgressPercentage == 0)
             {
                 // Progress 0: Update the list of all numbers
                 AllNumbersList.Add(number);
 
-                // Check if the number is divisible by 10 (ClassB will handle it)
-                classB.CheckNumber(number);
+                if (int.TryParse(inputTextBox.Text, out inputNumber) && inputNumber != 0)
+                {
+                    classB.CheckNumber(number, inputNumber); // Pass the divisor to ClassB
+                }
             }
             else if (e.ProgressPercentage == 1)
             {
-                // Progress 1: Update the list of numbers divisible by 10
+                // Progress 1: Update the list of numbers divisible by input number
                 NumbersList.Add(number);
             }
         }

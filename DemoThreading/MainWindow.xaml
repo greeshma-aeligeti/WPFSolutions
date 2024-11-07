@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".2*"/>
+            <RowDefinition/>
+
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <!-- First half (50%) -->
@@ -14,25 +19,31 @@
             <!-- Second half (50%) -->
         </Grid.ColumnDefinitions>
 
-            <ListView ItemsSource="{Binding AllNumbersList}" Margin="10" Grid.Column="0" VerticalAlignment="Top" Height="144" >
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="All numbers" DisplayMemberBinding="{Binding}" Width="356"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+        <StackPanel Orientation="Horizontal">
+            <Label VerticalAlignment="Center"  Content="Enter Number" RenderTransformOrigin="0.427,0.765" Margin="51,0,0,0"/>
+            <TextBox HorizontalContentAlignment="Left"  VerticalContentAlignment="Center" Height="20" Width="100" x:Name="inputTextBox" ToolTip="Enter Number"/>
 
-            <ListView ItemsSource="{Binding NumbersList}" Grid.Column="1" Margin="10" VerticalAlignment="Top" Height="144" >
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Multiples of Ten" DisplayMemberBinding="{Binding}" Width="356"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+        </StackPanel>
+        
+         <ListView ItemsSource="{Binding AllNumbersList}" Grid.Row="1" Margin="10" Grid.Column="0" VerticalAlignment="Top" Height="144" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="All numbers" DisplayMemberBinding="{Binding}" Width="356"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <ListView ItemsSource="{Binding NumbersList}"  Grid.Row="1" Grid.Column="1" Margin="10" VerticalAlignment="Top" Height="144" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Multiples of User Input" DisplayMemberBinding="{Binding}" Width="356"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <!-- Start Button -->
-        <Button x:Name="btnStart" Content="Start" Grid.Column="0" HorizontalAlignment="Right" Margin="10,220,20,0" VerticalAlignment="Top" Width="100" Click="BtnStart_Click"/>
+        <Button x:Name="btnStart" Content="Start" Grid.Column="0"  Grid.Row="1" HorizontalAlignment="Right" Margin="10,220,20,0" VerticalAlignment="Top" Width="100" Click="BtnStart_Click"/>
 
         <!-- Stop Button -->
-        <Button x:Name="btnStop" Content="Stop" HorizontalAlignment="Left" Grid.Column="1" Margin="10,220,240,40" VerticalAlignment="Top" Width="100" Click="BtnStop_Click"/>
+        <Button x:Name="btnStop" Content="Stop"  Grid.Row="1" HorizontalAlignment="Left" Grid.Column="1" Margin="10,220,240,40" VerticalAlignment="Top" Width="100" Click="BtnStop_Click"/>
     </Grid>
 </Window>

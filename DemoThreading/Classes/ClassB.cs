@@ -7,16 +7,15 @@ namespace DemoThreading.Classes
     {
 
         private BackgroundWorker _bgWorker;
-
         public ClassB(BackgroundWorker bgWorker)
         {
             _bgWorker = bgWorker;
         }
-        public void CheckNumber(int number)
+        public void CheckNumber(int number,int inputNumber)
         {
-            if (number % 10 == 0)
+            if (number % inputNumber == 0)
             {
-                _bgWorker.ReportProgress(1, number); // Report the divisible-by-10 number
+                _bgWorker.ReportProgress(1, number); // Report the divisible-by-inputNumber number
             }
         }
         
