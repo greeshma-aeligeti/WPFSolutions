@@ -15,8 +15,10 @@ namespace WPFSira.Converters
         {
             if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
                 return Visibility.Visible;
-
-            return Visibility.Collapsed;
+            else
+            {
+                return Visibility.Collapsed;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

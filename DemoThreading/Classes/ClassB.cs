@@ -13,9 +13,12 @@ namespace DemoThreading.Classes
         }
         public void CheckNumber(int number,int inputNumber)
         {
-            if (number % inputNumber == 0)
+            if (_bgWorker.IsBusy && !_bgWorker.CancellationPending)
             {
-                _bgWorker.ReportProgress(1, number); // Report the divisible-by-inputNumber number
+                if (number % inputNumber == 0)
+                {
+                    _bgWorker.ReportProgress(1, number); // Report the divisible-by-inputNumber number
+                }
             }
         }
         

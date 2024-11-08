@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DemoThreading"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        
+        Icon="D:\WPF\WPFSolution\DemoThreading\Icons\home.png"
+        Title="Home" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height=".2*"/>
+            <RowDefinition Height=".1*"/>
             <RowDefinition/>
 
         </Grid.RowDefinitions>
@@ -20,30 +22,48 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Orientation="Horizontal">
-            <Label VerticalAlignment="Center"  Content="Enter Number" RenderTransformOrigin="0.427,0.765" Margin="51,0,0,0"/>
-            <TextBox HorizontalContentAlignment="Left"  VerticalContentAlignment="Center" Height="20" Width="100" x:Name="inputTextBox" ToolTip="Enter Number"/>
+            <Label Content="Enter Number" VerticalAlignment="Center" Margin="10,0,-10,-4"  Width="101" Height="26"/>
+            <TextBox Height="20" Width="100" x:Name="inputTextBox" VerticalAlignment="Center" TextChanged="inputTextBox_TextChanged" ToolTip="Enter Number"  />
 
         </StackPanel>
-        
-         <ListView ItemsSource="{Binding AllNumbersList}" Grid.Row="1" Margin="10" Grid.Column="0" VerticalAlignment="Top" Height="144" >
-            <ListView.View>
+
+        <ListView x:Name="allNumsListView" ItemsSource="{Binding AllNumbersList}" Grid.Row="1" Margin="10" Grid.Column="0" VerticalAlignment="Top" Height="144"  >
+            <ListView.Resources>
+                <!-- Style to make column headers non-resizable -->
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListView}}" />
+                    <Setter Property="IsHitTestVisible" Value="False"/>
+                </Style>
+            </ListView.Resources>
+            <ListView.View >
                 <GridView>
-                    <GridViewColumn Header="All numbers" DisplayMemberBinding="{Binding}" Width="356"/>
+                    <!-- Set Width="Auto" and disable resizing by binding to ListView width -->
+                    <GridViewColumn Header="All Numbers" DisplayMemberBinding="{Binding}"  Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListView}}" />
                 </GridView>
             </ListView.View>
         </ListView>
 
-        <ListView ItemsSource="{Binding NumbersList}"  Grid.Row="1" Grid.Column="1" Margin="10" VerticalAlignment="Top" Height="144" >
+        <ListView x:Name="multipleNumsListView" ItemsSource="{Binding NumbersList}" 
+                  Grid.Row="1" Grid.Column="1" Margin="10" Height="144"
+                  VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <ListView.Resources>
+                <!-- Style to make column headers non-resizable -->
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListView}}" />
+                    <Setter Property="IsHitTestVisible" Value="False"/>
+                </Style>
+            </ListView.Resources>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Multiples of User Input" DisplayMemberBinding="{Binding}" Width="356"/>
+                    <!-- Set Width="Auto" and disable resizing by binding to ListView width -->
+                    <GridViewColumn Header="Multiples of User Input" DisplayMemberBinding="{Binding}"  Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListView}}" />
                 </GridView>
             </ListView.View>
         </ListView>
         <!-- Start Button -->
-        <Button x:Name="btnStart" Content="Start" Grid.Column="0"  Grid.Row="1" HorizontalAlignment="Right" Margin="10,220,20,0" VerticalAlignment="Top" Width="100" Click="BtnStart_Click"/>
+        <Button x:Name="btnStart" Content="Start" Grid.Column="0"  Grid.Row="1" HorizontalAlignment="Right" Margin="10,180,20,0" VerticalAlignment="Top" Width="100" Click="BtnStart_Click"/>
 
         <!-- Stop Button -->
-        <Button x:Name="btnStop" Content="Stop"  Grid.Row="1" HorizontalAlignment="Left" Grid.Column="1" Margin="10,220,240,40" VerticalAlignment="Top" Width="100" Click="BtnStop_Click"/>
+        <Button x:Name="btnStop" Content="Stop"  Grid.Column="1"  Grid.Row="1" HorizontalAlignment="Left" Margin="10,180,240,40" VerticalAlignment="Top" Width="100" Click="BtnStop_Click"/>
     </Grid>
 </Window>
