@@ -6,19 +6,13 @@ namespace DemoThreading.Classes
     public class ClassB
     {
 
-        private BackgroundWorker _bgWorker;
-        public ClassB(BackgroundWorker bgWorker)
-        {
-            _bgWorker = bgWorker;
-        }
+        public event Action<int> DivisibleNumberFound;
+
         public void CheckNumber(int number,int inputNumber)
         {
-            if (_bgWorker.IsBusy && !_bgWorker.CancellationPending)
+            if (inputNumber != 0 && number % inputNumber == 0)
             {
-                if (number % inputNumber == 0)
-                {
-                    _bgWorker.ReportProgress(1, number); // Report the divisible-by-inputNumber number
-                }
+                DivisibleNumberFound?.Invoke(number);
             }
         }
         

@@ -17,7 +17,6 @@ namespace DemoThreading
 {
     public partial class MainWindow : Window
     {
-        private BackgroundWorker bgWorker = new BackgroundWorker();
         private ClassA classA;
         private ClassB classB;
         public ObservableCollection<int> AllNumbersList { get; set; }
@@ -38,45 +37,35 @@ namespace DemoThreading
 
             // Initialize ClassA and ClassB
             classA = new ClassA();
-            classB = new ClassB(bgWorker);
+            classB = new ClassB();
 
             AllNumbersList.CollectionChanged += AllNumbersList_CollectionChanged;
-            NumbersList.CollectionChanged +=MultipleList_CollectionChanged;
-            bgWorker.DoWork += classA.GenerateNumbers;
-            bgWorker.ProgressChanged += BgWorker_ProgressChanged; // Handle progress updates
-            bgWorker.WorkerSupportsCancellation = true;
-            bgWorker.WorkerReportsProgress = true;
+            NumbersList.CollectionChanged += MultipleList_CollectionChanged;
+
+
+
+            classA.NumberGenerated += OnNumberGenerated;
+            classB.DivisibleNumberFound += OnDivisibleNumberFound;
         }
-      
-        private void BgWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void OnNumberGenerated(int number)
         {
-          
-
-
-                int number = (int)e.UserState;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                AllNumbersList.Add(number);
                 int inputNumber;
+                if (int.TryParse(inputTextBox.Text, out inputNumber) && inputNumber != 0)
+                {
+                    classB.CheckNumber(number, inputNumber);
+                }
+            });
+        }
 
-                if (e.ProgressPercentage == 0)
-                {
-                    // Progress 0: Update the list of all numbers
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        AllNumbersList.Add(number);
-                    });
-                    if (int.TryParse(inputTextBox.Text, out inputNumber) && inputNumber != 0)
-                    {
-                        classB.CheckNumber(number, inputNumber); // Pass the divisor to ClassB
-                    }
-                }
-                else if (e.ProgressPercentage == 1)
-                {
-                    // Progress 1: Update the list of numbers divisible by input number
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        NumbersList.Add(number);
-                    });
-                }
-            
+        private void OnDivisibleNumberFound(int number)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                NumbersList.Add(number);
+            });
         }
         private void AllNumbersList_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -108,48 +97,31 @@ namespace DemoThreading
 
         private void BtnStart_Click(object sender, RoutedEventArgs e)
         {
-            // Start the BackgroundWorker if not already running
-            if (!bgWorker.IsBusy)
+            if (string.IsNullOrWhiteSpace(inputTextBox.Text))
             {
-
-
-                
-                AllNumbersList.Clear();
-                NumbersList.Clear(); // Clear the list before starting
-
-                if (inputTextBox.Text.Length == 0)
-                {
-                    MessageBox.Show("Enter Number to see the results", "Empty Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                else
-                {
-
-                    bgWorker.RunWorkerAsync();
-                    btnStart.IsEnabled = false;
-                    btnStop.IsEnabled = true;
-                }
-               
+                MessageBox.Show("Enter Number to see the results", "Empty Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            AllNumbersList.Clear();
+            NumbersList.Clear();
+            btnStart.IsEnabled = false;
+            btnStop.IsEnabled = true;
+            classA.GenerateNumbers();
+        
         }
 
         private void BtnStop_Click(object sender, RoutedEventArgs e)
         {
-            btnStop.IsEnabled = false;
+
             btnStart.IsEnabled = true;
-            // Cancel the BackgroundWorker
-            if (bgWorker.IsBusy)
-            {
-                bgWorker.CancelAsync();
-            }
+            btnStop.IsEnabled = false;
+            classA.StopGeneratingNumbers();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Ensure that the BackgroundWorker is stopped when closing
-            if (bgWorker.IsBusy)
-            {
-                bgWorker.CancelAsync();
-            }
+            classA.StopGeneratingNumbers();
         }
 
         private void inputTextBox_TextChanged(object sender, TextChangedEventArgs e)

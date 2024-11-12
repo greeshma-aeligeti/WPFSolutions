@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.ComponentModel;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace DemoThreading.Classes
 {
 
@@ -8,28 +9,41 @@ namespace DemoThreading.Classes
     {
         private Random _random;
 
+        public event Action<int> NumberGenerated;
+        private CancellationTokenSource _cancellationTokenSource;
 
         public ClassA()
         {
             _random = new Random();
+          
         }
 
-        public void GenerateNumbers(object sender, DoWorkEventArgs e)
+        public void GenerateNumbers()
         {
-            BackgroundWorker worker = sender as BackgroundWorker;
+            _cancellationTokenSource = new CancellationTokenSource();
 
-            while (!worker.CancellationPending)
-            {
-                int randomNumber = _random.Next(1, 2001); // Random number between 1 and 2000
-                worker.ReportProgress(0, randomNumber);
-                Thread.Sleep(500); // Wait for 500ms between numbers
-            }
 
-            if (worker.CancellationPending)
+            Task.Run(async() =>
             {
-                e.Cancel = true; // End the worker if cancelled
-            }
+                while (!_cancellationTokenSource.Token.IsCancellationRequested)
+                {
+
+                    int randomNumber = _random.Next(1, 2001); // Random number between 1 and 2000
+                    NumberGenerated?.Invoke(randomNumber);
+                    Thread.Sleep(500); // Wait for 500ms between numbers
+
+
+                }
+                
+            }, _cancellationTokenSource.Token);
+              
         }
+
+        public void StopGeneratingNumbers()
+        {
+            _cancellationTokenSource?.Cancel();
+        }
+
 
     }
 
