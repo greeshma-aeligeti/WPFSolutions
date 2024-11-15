@@ -6,7 +6,6 @@ namespace DemoThreading
     public partial class MainWindow : Window
     {
         private MainWindowViewModel viewModel;
-
         public MainWindow()
         {
 

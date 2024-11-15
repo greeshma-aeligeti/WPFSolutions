@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace WPFMThreading
+namespace WpfPractice
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -1,8 +1,4 @@
-﻿
-using System;
-using System.ComponentModel;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-namespace DemoThreading.Classes
+﻿namespace DemoThreading.Classes
 {
 
     public class CustomRandomNumberGenerator
@@ -15,7 +11,7 @@ namespace DemoThreading.Classes
         public CustomRandomNumberGenerator()
         {
             _random = new Random();
-              }
+        }
 
         public void GenerateNumbers(int LowerLimit,int UpperLimit)
         {

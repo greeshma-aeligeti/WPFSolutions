@@ -14,19 +14,18 @@ internal class MainWindowViewModel : ViewModelBase,IDataErrorInfo
     private readonly CustomRandomNumberGenerator randomNumberGenerator;
     private readonly FilterNumberMultiples filterNumberClass;
 
-
     public event Action ScrollAllNumbersToEnd;
     public event Action ScrollFilteredNumbersToEnd;
 
 
 
-    private bool displayMsgBox;
+  //  private bool displayMsgBox;
 
-    public ObservableCollection<int> AllNumbersList { get; private set; }
-    public ObservableCollection<int> FilteredNumbersList { get; private set; }
+    public ObservableCollection<int> AllNumbersList { get;  set; }
+    public ObservableCollection<int> FilteredNumbersList { get;  set; }
 
-    public RelayCommand StartCommand { get; private set; }
-    public RelayCommand StopCommand { get; private set; }
+    public RelayCommand StartCommand { get;  set; }
+    public RelayCommand StopCommand { get; set; }
 
 
     private int? _lowerLimit;
@@ -179,6 +178,7 @@ internal class MainWindowViewModel : ViewModelBase,IDataErrorInfo
 
         FilteredNumbersList.Add(number);
         ScrollFilteredNumbersToEnd?.Invoke();
+
     }
 
     private void StartGenerating()
@@ -237,14 +237,14 @@ internal class MainWindowViewModel : ViewModelBase,IDataErrorInfo
 
     private void OnInputNumberChanged()
     {
-       if (displayMsgBox) return;
+      /// if (displayMsgBox) return;
 
-        if (!int.TryParse(InputNumber, out _))
+        if (!int.TryParse(InputNumber, out _) && InputNumber!="")
         {
-            displayMsgBox = true;
+            //displayMsgBox = true;
             MessageBox.Show("Please enter a valid integer.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
             InputNumber = string.Empty;
-            displayMsgBox = false;
+           // displayMsgBox = false;
             return;
         }
 

@@ -8,11 +8,11 @@ namespace DemoThreading.Classes
 
         public event Action<int> DivisibleNumberFound;
 
-        public void CheckNumber(int number,int inputNumber)
+        public void CheckNumber(int RandomNumber,int inputNumber)
         {
-            if (inputNumber != 0 && number % inputNumber == 0)
+            if (inputNumber != 0 && RandomNumber % inputNumber == 0)
             {
-                DivisibleNumberFound?.Invoke(number);
+                DivisibleNumberFound?.Invoke(RandomNumber);
             }
         }
         
