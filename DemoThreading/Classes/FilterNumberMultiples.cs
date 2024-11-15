@@ -3,7 +3,7 @@
 namespace DemoThreading.Classes
 {
 
-    public class ClassB
+    public class FilterNumberMultiples
     {
 
         public event Action<int> DivisibleNumberFound;
